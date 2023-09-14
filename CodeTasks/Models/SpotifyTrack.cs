@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,10 @@ namespace CodeTasks.Models
         public long DurationMS { get; set; }
         public bool Explicit { get; set; }
         public string? Genre { get; set; }
+
+        internal object Sort(SortDefinition<SpotifyTrack> sort)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

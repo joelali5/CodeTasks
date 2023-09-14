@@ -18,6 +18,11 @@ namespace CodeTasks.Repository
             this._collection = mongoDatabase.GetCollection<SpotifyTrack>(nameof(SpotifyTrack));
         }
 
+        public IMongoCollection<SpotifyTrack> GetCollection()
+        {
+            return this._collection;
+        }
+
         public async Task<List<SpotifyTrack>> GetAllTracks()
         {
             return await this._collection.Find(_ => true).ToListAsync();

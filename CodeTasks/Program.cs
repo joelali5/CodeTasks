@@ -26,6 +26,7 @@ namespace CodeTasks
 
             // Tasks
             var spotifyTracksTask = new SpotifyTracks(spotifyTrackRepository);
+
             var fizzBuzz = new FizzBuzz();
             var stringParsing = new StringParsing();
             var personGenerator = new PersonNameGenerator();
@@ -53,9 +54,12 @@ namespace CodeTasks
 
             _ = Task.Run(async () =>
             {
-                Console.WriteLine(
-                    $"[stringParsing][IsEmailValid] IsValid: {stringParsing.IsEmailValid(emails.ToList())}"
-                );
+                List<(string value, bool valid)> validResults = await stringParsing.IsEmailValid(emails.ToList());
+                foreach (var (value, valid) in validResults)
+                {
+                    Console.WriteLine($"[stringParsing][IsEmailValid] IsValid: {value}: {(valid ? "Valid" : "Invalid")}");
+                }
+
                 Console.WriteLine(
                     $"[FizzBuzz][GetFizzBuzz0To10000] {await fizzBuzz.GetFizzBuzz1To100()}"
                 );
@@ -75,22 +79,29 @@ namespace CodeTasks
                         (15, "Long")
                     }, 1000)}"
                 );
+
                 Console.WriteLine(
                     $"[SpotifyTracks][GetAllTracks()] Count: {(await spotifyTracksTask.GetAllTracks()).Count}"
                 );
+
                 Console.WriteLine(
                     $"[SpotifyTracks][GetNMostPopular(100)] {string.Join(Environment.NewLine, (await spotifyTracksTask.GetNMostPopular(100)).Select(x => $"Popularity: {x.Popularity}, TrackName: {x.TrackName}"))}"
                 );
+
                 Console.WriteLine(
                     $"[SpotifyTracks][GetAllGenreSortedAZ] {string.Join(",", await spotifyTracksTask.GetAllGenreSortedAZ())}"
                 );
+
                 Console.WriteLine(
                     $"[SpotifyTracks][GetTopNAlbumsWithTrackNamesWithTheMostTracksWithinAlbum(10)] {string.Join(Environment.NewLine, (await spotifyTracksTask.GetTopNAlbumsWithTrackNamesWithTheMostTracksWithinAlbum(10)).Select(x => $"Album: {x.albumName}, Tracks: [{x.TrackNames.Count}]"))}"
                 );
+
                 Console.WriteLine(
                     $"[SpotifyTracks][GetTheMostUsedSongTitle] {await spotifyTracksTask.GetTheMostUsedSongTitle()}"
                 );
             });
+
+
 
             Console.WriteLine("Press any key to end the proccess");
             _ = Console.ReadKey();

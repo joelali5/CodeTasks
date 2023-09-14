@@ -10,18 +10,39 @@ namespace CodeTasks.Tasks
     {
         public async Task<List<(string value, bool valid)>> IsEmailValid(List<string> values)
         {
-            /* This function shoulr return the string valur along with a bool indicating if the string is valid.
-             * The is considerd valid if the following rules are met:
-             * . The string is not null or empty.
-             * . The string is not longer than 200 characters.
-             * . The string does not contain any of the following characters: !$£^&*()=
-             * . The String Contains one @.
-             * . The String contains no uppercase letters.
-             * . the string contains at least one letter prefixed with an "."
-             * . The string contains no spaces.
-            */
+            List<(string value, bool valid)> result = new List<(string value, bool valid)>();
 
-            return new List<(string value, bool valid)>();
+            foreach (var value in values)
+            {
+                bool isValid = true;
+
+                if (string.IsNullOrWhiteSpace(value) || value.Length > 200)
+                {
+                    isValid = false;
+                }
+                else if (value.Contains('!') || value.Contains('$') || value.Contains('£') ||
+                         value.Contains('^') || value.Contains('&') || value.Contains('*') ||
+                         value.Contains('(') || value.Contains(')') || value.Contains('='))
+                {
+                    isValid = false;
+                }
+                else if (!value.Contains('@') || value.Any(char.IsUpper))
+                {
+                    isValid = false;
+                }
+                else if (!value.Contains('.') || value.IndexOf('.') == 0)
+                {
+                    isValid = false;
+                }
+                else if (value.Contains(' '))
+                {
+                    isValid = false;
+                }
+
+                result.Add((value, isValid));
+            }
+
+            return result;
         }
     }
 }
